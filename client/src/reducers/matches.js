@@ -1,7 +1,7 @@
 import { ALL_MATCHES, MATCHES_LOADING, MATCHES_ERR } from "../actions/matches";
 
 const initialState = {
-  matches: [],
+  matches: {},
   loading: true,
   error: null
 };
