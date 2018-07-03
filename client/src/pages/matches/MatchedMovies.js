@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { startGetSingleUserMatches } from "../../actions/matches";
+import {
+  startGetSingleUserMatches,
+  getSingleUserMatches
+} from "../../actions/matches";
+import { startAddToFavorites } from "../../actions/favorites";
 import Loading from "../../components/Loading";
 import Card from "../../components/Card";
 
@@ -10,6 +14,16 @@ class MatchedMovies extends Component {
     const { matchedUserId } = this.props.match.params;
     this.props.startGetSingleUserMatches(matchedUserId);
   }
+
+  addToFavorites = movie => {
+    const { singleUserMatches } = this.props;
+
+    this.props.startAddToFavorites(movie);
+    const updatedUnMatched = singleUserMatches.filter(
+      ({ movieid }) => movieid !== movie.movieid
+    );
+    this.props.getSingleUserMatches(updatedUnMatched);
+  };
 
   renderCards = movies => {
     return movies.map(movie => {
@@ -75,5 +89,5 @@ const mapStateToProps = ({ matches }) => ({
 
 export default connect(
   mapStateToProps,
-  { startGetSingleUserMatches }
+  { startGetSingleUserMatches, getSingleUserMatches, startAddToFavorites }
 )(MatchedMovies);
