@@ -5,32 +5,41 @@ import { Link } from "react-router-dom";
 import { startGetMatches } from "../../actions/matches";
 import Loading from "../../components/Loading";
 import hasOwnProp from "../../utils/hasOwnProp";
+import capitalize from "../../utils/capitalize";
+import sortArrayOfObjs from "../../utils/sortArrayOfObjs";
 
 class Matches extends Component {
   componentDidMount() {
     this.props.startGetMatches();
   }
 
-  renderList = ({ unmatched, matched }) => {
-    const movieLength = unmatched.length;
-    const { user } = unmatched[0];
-    return (
-      <li
-        key={user._id}
-        className="list-group-item d-flex justify-content-between"
-      >
-        They have {movieLength} movies that are different. &ensp;
-        {user.username} likes {matched} of the same movies as you.
-        <Link className="btn btn-primary" to={`/matched-movies/${user._id}`}>
-          View Movies
-        </Link>
-      </li>
-    );
+  renderList = array => {
+    return array.map(({ unmatched, matched }) => {
+      const movieLength = unmatched.length;
+      const { user } = unmatched[0];
+      const { username } = user;
+      return (
+        <li
+          key={user._id}
+          className="list-group-item d-flex justify-content-between"
+        >
+          <div>
+            {capitalize(username)} matched <strong>{matched}</strong> movies
+            with you. &nbsp;
+            {capitalize(username)} has <strong>{movieLength}</strong> other
+            movies that you may like.
+          </div>
+
+          <Link className="btn btn-primary" to={`/matched-movies/${user._id}`}>
+            View Movies
+          </Link>
+        </li>
+      );
+    });
   };
 
   render() {
     const { matches, loading, error } = this.props;
-
     let content, message;
     if (loading) {
       content = <Loading />;
@@ -41,14 +50,18 @@ class Matches extends Component {
 
       for (var prop in matches) {
         if (hasOwnProp(matches, prop)) {
-          listArray.push(this.renderList(matches[prop]));
+          listArray.push(matches[prop]);
         }
       }
+
+      const sortedListArray = sortArrayOfObjs(listArray, "matched", "desc");
 
       content = (
         <Fragment>
           <h1 className="text-center mb-3 mt-3 display-4">User Matches</h1>
-          <ul className="list-group list-group-flush mt-4">{listArray}</ul>
+          <ul className="list-group list-group-flush mt-4">
+            {this.renderList(sortedListArray)}
+          </ul>
         </Fragment>
       );
     }
