@@ -30,6 +30,10 @@ class MovieDetails extends Component {
     this.props.startAddToFavorites(movie, "details", this.props.history);
   };
 
+  goBack = () => {
+    this.props.history.goBack();
+  };
+
   render() {
     const { movie, loading } = this.props;
     let content;
@@ -63,6 +67,7 @@ class MovieDetails extends Component {
           homepage={homepage}
           remove={this.removeFromFavorites}
           add={this.addToFavorites}
+          goBack={this.goBack}
         />
       );
     } else if (!loading && !movie) {

@@ -13,14 +13,15 @@ class MatchedMovies extends Component {
 
   renderCards = movies => {
     return movies.map(movie => {
-      const { title, poster_path, _id } = movie;
+      const { title, poster_path, _id, movieid } = movie;
+
       return (
         <Card
           key={_id}
-          id={_id}
+          movieid={movieid}
           image={poster_path}
           title={title}
-          parent="search"
+          parent="matched"
           add={this.addToFavorites}
         />
       );

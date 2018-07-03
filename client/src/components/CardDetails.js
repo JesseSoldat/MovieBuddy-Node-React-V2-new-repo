@@ -41,10 +41,10 @@ class CardDetails extends Component {
   renderAddBtn = movie => {
     return (
       <Fragment>
-        <Link to="/search" className="btn btn-secondary mr-2">
+        <button className="btn btn-secondary mr-2" onClick={this.goBack}>
           <i className="fas fa-arrow-circle-left mr-2" />
           <span className="mr-2">Back</span>
-        </Link>
+        </button>
         <button
           className="btn btn-primary"
           onClick={() => this.disableAddBtn(movie)}
@@ -74,20 +74,22 @@ class CardDetails extends Component {
     );
   };
 
-  renderLoadingBtn = (string, parent, btnType) => {
-    return (
-      <Fragment>
-        <Link to={parent} className="btn btn-secondary mr-2">
-          <i className="fas fa-arrow-circle-left mr-2" />
-          <span className="mr-2">Back</span>
-        </Link>
-        <button className={`btn btn-${btnType}`}>
-          <i className="fas fa-spinner fa-spin mr-2" />
-          {string}
-        </button>
-      </Fragment>
-    );
+  goBack = () => {
+    this.props.goBack();
   };
+
+  renderLoadingBtn = (string, btnType) => (
+    <Fragment>
+      <button className="btn btn-secondary mr-2" onClick={this.goBack}>
+        <i className="fas fa-arrow-circle-left mr-2" />
+        <span className="mr-2">Back</span>
+      </button>
+      <button className={`btn btn-${btnType}`}>
+        <i className="fas fa-spinner fa-spin mr-2" />
+        {string}
+      </button>
+    </Fragment>
+  );
 
   render() {
     const {
@@ -136,18 +138,18 @@ class CardDetails extends Component {
           </div>
         </div>
         <div className="card-footer">
-          {parent === "search" && !disabled
+          {(parent === "search" || parent === "matched") && !disabled
             ? this.renderAddBtn({ movieid, title, image: poster_path })
             : null}
-          {parent === "search" && disabled
-            ? this.renderLoadingBtn("Favorite", "/search", "primary")
+          {(parent === "search" || parent === "matched") && disabled
+            ? this.renderLoadingBtn("Favorite", "primary")
             : null}
 
           {parent === "favorites" && !disabled
             ? this.renderDeleteBtn({ _id, movieid, title, poster_path })
             : null}
           {parent === "favorites" && disabled
-            ? this.renderLoadingBtn("Delete", "/favorites", "danger")
+            ? this.renderLoadingBtn("Delete", "danger")
             : null}
         </div>
       </div>

@@ -61,8 +61,9 @@ class Card extends Component {
   };
 
   render() {
-    const { _id = null, id, image, title, parent } = this.props;
+    const { _id = null, movieid, image, title, parent } = this.props;
     const { disabled } = this.state;
+
     return (
       <div className="card ml-auto mr-auto mb-3" style={{ width: "270px" }}>
         <img
@@ -77,22 +78,22 @@ class Card extends Component {
 
         <div className="card-body pt-1 d-flex flex-row justify-content-around">
           <Link
-            to={`/movie-details/${id}?parent=${parent}&id=${_id}`}
+            to={`/movie-details/${movieid}?parent=${parent}&id=${_id}`}
             className="btn btn-secondary"
           >
             <i className="fas fa-clipboard-list mr-2" />
             <span>Details</span>
           </Link>
 
-          {parent === "search" && !disabled
-            ? this.renderAddBtn({ id, title, image })
+          {(parent === "search" || parent === "matched") && !disabled
+            ? this.renderAddBtn({ movieid, title, image })
             : null}
-          {parent === "search" && disabled
+          {(parent === "search" || parent === "matched") && disabled
             ? this.renderLoadingBtn("Favorite", "primary")
             : null}
 
           {parent === "favorites" && !disabled
-            ? this.renderDeleteBtn({ _id, id, title, image })
+            ? this.renderDeleteBtn({ _id, movieid, title, image })
             : null}
           {parent === "favorites" && disabled
             ? this.renderLoadingBtn("Delete", "danger")

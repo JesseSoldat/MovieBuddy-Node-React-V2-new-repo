@@ -25,10 +25,11 @@ class Search extends Component {
   renderCards = movies =>
     movies.map(movie => {
       const { title, poster_path, id } = movie;
+
       return (
         <Card
           key={id}
-          id={id}
+          movieid={id}
           image={poster_path}
           title={title}
           parent="search"

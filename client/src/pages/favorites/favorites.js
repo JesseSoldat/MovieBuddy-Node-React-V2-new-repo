@@ -25,7 +25,7 @@ class favorites extends Component {
         <Card
           key={movieid}
           _id={_id}
-          id={movieid}
+          movieid={movieid}
           image={poster_path}
           title={title}
           parent="favorites"
