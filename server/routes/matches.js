@@ -55,4 +55,24 @@ module.exports = app => {
       res.status(400).send(err);
     }
   });
+
+  app.get("/api/matches/movies/:matchedUserId", isAuth, async (req, res) => {
+    const { matchedUserId } = req.params;
+    const {
+      user: { _id }
+    } = req;
+
+    try {
+      const [userMovies, matchedUserMovies] = await Promise.all([
+        Movie.find({ user: _id }),
+        Movie.find({ user: matchedUserId }).populate("user", "username")
+      ]);
+      const userMoviesIds = userMovies.map(movie => movie.movieid);
+      const filterMovies = matchedUserMovies.filter(
+        movie => !userMoviesIds.includes(movie.movieid)
+      );
+
+      res.status(200).send(filterMovies);
+    } catch (err) {}
+  });
 };

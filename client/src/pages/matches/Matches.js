@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { startGetMatches } from "../../actions/matches";
 import Loading from "../../components/Loading";
@@ -14,9 +15,15 @@ class Matches extends Component {
     const movieLength = unmatched.length;
     const { user } = unmatched[0];
     return (
-      <li key={user._id} className="list-group-item">
-        {user.username} likes {matched} of the same movies as you. They have{" "}
-        {movieLength} movies that are different
+      <li
+        key={user._id}
+        className="list-group-item d-flex justify-content-between"
+      >
+        They have {movieLength} movies that are different. &ensp;
+        {user.username} likes {matched} of the same movies as you.
+        <Link className="btn btn-primary" to={`/matched-movies/${user._id}`}>
+          View Movies
+        </Link>
       </li>
     );
   };

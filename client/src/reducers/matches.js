@@ -1,13 +1,19 @@
-import { ALL_MATCHES, MATCHES_LOADING, MATCHES_ERR } from "../actions/matches";
+import {
+  ALL_MATCHES,
+  SINGLE_USER_MATCHES,
+  MATCHES_LOADING,
+  MATCHES_ERR
+} from "../actions/matches";
 
 const initialState = {
   matches: {},
+  singleUserMatches: [],
   loading: true,
   error: null
 };
 
 export default (state = initialState, action) => {
-  const { type, matches, loading, error } = action;
+  const { type, matches, singleUserMatches, loading, error } = action;
 
   switch (type) {
     case MATCHES_LOADING:
@@ -19,8 +25,11 @@ export default (state = initialState, action) => {
 
     case ALL_MATCHES:
       console.log("ALL_MATCHES", matches);
-
       return { ...state, matches, loading, error };
+
+    case SINGLE_USER_MATCHES:
+      console.log("SINGLE_USER_MATCHES", singleUserMatches);
+      return { ...state, singleUserMatches, loading, error };
 
     default:
       return { ...state };
